@@ -1,0 +1,13 @@
+﻿@using EntityLayer.Entities;
+@model List<DiscountRate>
+
+<div class="form-group">
+	<label class="form-label" for="DiscountId">İndirim Oranı</label>
+	<select class="form-select" name="DiscountId">
+		<option value="0" disabled selected>İndirim Seçiniz...</option>
+		@foreach(var item in Model)
+		{
+			<option value="@item.DiscountRateId">@item.DiscontRateName</option>
+		}
+	</select>
+</div>

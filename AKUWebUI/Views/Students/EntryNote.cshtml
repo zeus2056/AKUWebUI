@@ -1,0 +1,33 @@
+﻿@model EntryNoteModel
+
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Not Gir</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="EntryNote" asp-controller="Students">
+			<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+			<input type="hidden" asp-for="ExamId"/>
+			<div class="form-group">
+				<label class="form-label" asp-for="Note">Sınav Notu</label>
+				<input type="number" asp-for="Note" class="form-control" min="1" max="100"/>
+				<span asp-validation-for="Note" class="text-info mt-2"></span>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Not Gir</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

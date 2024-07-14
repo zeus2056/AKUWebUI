@@ -1,0 +1,63 @@
+﻿@using EntityLayer.Entities;
+@model List<HistoryPayment>
+@{
+    Layout = null;
+}
+
+
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AKUWebUI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AKUWebUI.styles.css" asp-append-version="true" />
+    <style>
+        * {
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="pdfContainer">
+        <div class="img text-center mb-2">
+            <img src="~/Images/minikodlogo.png" class="img-fluid" width="150" />
+        </div>
+        <h1 class="h3 text-center mb-2" style="color: rgba(132, 10, 105, 0.7);">MİNİKOD AKADEMİ</h1>
+        <p class="lead text-center" style="color: rgba(132, 10, 105, 0.9);">BANKA ÖDEME RAPORU</p>
+        <br />
+        <br />
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Banka Adı</th>
+                    <th>Öğrenci</th>
+                    <th>Kur</th>
+                    <th>Tarih</th>
+                    <th>Ödeme Tutarı</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.Bank.BankName)</td>
+                        <td>@(item.Student.Name + " " + item.Student.Surname)</td>
+                        <td>@item.Rate.RateName</td>
+                        <td>@item.DatePrice</td>
+                        <td>@item.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>

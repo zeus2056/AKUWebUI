@@ -1,0 +1,27 @@
+﻿
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container">
+	<h1 class="h3">Mail Gönder</h1>
+	<hr />
+
+	<form method="post" asp-action="SendMail" asp-controller="Rapors" enctype="multipart/form-data">
+		<div class="text-info" asp-validation-summary="ModelOnly"></div>
+		<div class="form-group">
+			<label class="form-label">Gönderilecek Mail Adresi</label>
+			<input type="email" class="form-control" name="Mail" placeholder="Mail"/>
+		</div>
+		<div class="form-group">
+			<label class="form-label">Dosya</label>
+			<input type="file" class="form-control" name="File"/>
+		</div>
+		<div class="form-group text-center">
+			<button class="btn btn-dark w-100 text-center">Mail Gönder</button>
+		</div>
+	</form>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

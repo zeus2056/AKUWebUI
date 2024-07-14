@@ -1,0 +1,145 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+
+@model List<Rate>
+
+@if (Model.Count > 0)
+{
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>Şube</th>
+					<th>Yaş Grubu</th>
+					<th>Kur İsmi</th>
+					<th>Kur Süresi</th>
+					<th>Kur Fiyatı</th>
+
+					<th>Kur Durumu</th>
+
+					@if (ViewBag.Role)
+					{
+						<th>Durumu</th>
+						<th>Öğrenci Ekle</th>
+						<th>Kur Düzenle</th>
+					}
+					<th>Öğrencileri Gör</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Branch.BranchName</td>
+						<td>@item.AgeGroup.Name</td>
+						<td>@item.RateName</td>
+
+						<td>@item.RateDate saat</td>
+						<td>@item.RatePrice</td>
+						<td>@item.RateState</td>
+
+						@if (ViewBag.Role)
+						{
+
+							<td>
+								<a class="btn btn-danger" asp-action="EditState" asp-controller="OpenRates" asp-route-slug="@item.Slug">Durumunu Değiştir</a>
+							</td>
+							@*<td>
+				@if (item.RateState)
+				{
+
+				<a class="btn btn-danger" asp-action="RemoveStudent" asp-controller="OpenRates" asp-route-slug="@item.Slug">Öğrenci Çıkar</a>
+
+				}
+				</td>*@
+							<td>
+								@if (item.RateState)
+								{
+									<a class="btn btn-info" asp-action="AddRateStudent" asp-controller="OpenRates" asp-route-slug="@item.Slug" asp-route-branchId="@item.BranchId">
+										Öğrenci Ekle
+									</a>
+								}
+							</td>
+							<td>
+								<a class="btn btn-warning" asp-action="editrate" asp-controller="openrates" asp-route-slug="@item.Slug">Güncelle</a>
+							</td>
+							
+						}
+						<td>
+							<a class="btn btn-info" asp-action="ShowStudents" asp-controller="OpenRates" asp-route-slug="@item.Slug">Görüntüle</a>
+						</td>
+					</tr>
+				}
+
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek mevcut kur yok...
+	</div>
+}
+
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		var table = $('#myTable').DataTable({
+			orderClasses: false,
+			'stripeClasses': ['stripe1', 'stripe2']
+		});
+
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "${error.alertType}",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

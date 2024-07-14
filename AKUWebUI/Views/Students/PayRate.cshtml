@@ -1,0 +1,108 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+@model List<ResultPaymentModel>
+@if (Model.Count > 0)
+{
+	<a class="btn btn-info" asp-action="PayRateRapor" asp-controller="Students" asp-route-id="@Model[0].StudentId" target="_blank">PDF ÇEVİR</a>
+	<a class="btn btn-info" asp-action="PayRateFiltered" asp-controller="Students" asp-route-id="@Model[0].StudentId" >Tarih Filtrele PDF ÇEVİR</a>
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>Kur Adı</th>
+					<th>Toplam Kur Bedeli</th>
+					<th>Ödeme Tutarı</th>
+					<th>Bakiye</th>
+					<th>Öde</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var payment in Model)
+				{
+					<tr class="@(payment.State ? "bg-danger" : "")">
+						<td>@payment.RateName</td>
+						<td>@payment.RatePrice</td>
+						<td>@payment.RemaningPrice</td>
+						<td>@payment.Bakiye</td>
+						<td>
+							@if (!payment.State)
+							{
+								<a class="btn btn-info" asp-action="PayRates" asp-controller="Students" asp-route-studentId="@payment.StudentId" asp-route-id="@payment.PaymentId" asp-route-rateStudentId="@payment.RateStudentId">
+									Ödeme Yap
+								</a>
+							}
+							else
+							{
+								<a class="btn btn-dark" asp-action="DeletePayment" asp-controller="Students" asp-route-studentId="@payment.StudentId" asp-route-id="@payment.PaymentId" asp-route-rateStudentId="@payment.RateStudentId">Sil</a>
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek Ödeme Yok...
+	</div>
+}
+
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let tbl = new DataTable("#myTable")
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

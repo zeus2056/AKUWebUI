@@ -1,0 +1,124 @@
+﻿@using EntityLayer.Entities
+@{
+    Layout = null;
+}
+@model RegisterModel
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="~/Register/fonts/material-icon/css/material-design-iconic-f
+ont.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/Register/css/style.css">
+</head>
+<body>
+    <div class="main">
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="~/Register/images/signin-image.jpg" alt="sing up image"></figure>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Personel Ekle</h2>
+                        <form method="POST" class="register-form" id="login-form" asp-action="Index" asp-controller="Register" enctype="multipart/form-data">
+                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" id="your_name" placeholder="Ad"  asp-for="Name"/>
+                                <span class="text-danger" asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_lastname"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" id="your_lastname" placeholder="Soyad" asp-for="Surname" />
+                                <span class="text-danger" asp-validation-for="Surname" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_tc"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" id="your_tc" placeholder="TC" maxlength="11" asp-for="TC"/>
+                                <span class="text-danger" asp-validation-for="TC" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_date"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="date" id="your_date" asp-for="Date" />
+                                <span class="text-danger" asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="your_username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" id="your_username" placeholder="Kullanıcı Adı" asp-for="UserName" />
+                                <span class="text-danger" asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" id="your_pass" placeholder="Şifre"asp-for="Password" />
+                                <span class="text-danger" asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_email"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="email" id="your_email" placeholder="Email" asp-for="Email" />
+                                <span class="text-danger" asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_phone"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="tel" id="your_hone" placeholder="05*********" maxlength="11"  asp-for="Phone" />
+                                <span class="text-danger" asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <select class="form-select mb-2" asp-for="Gender">
+                                <option value="0" disabled selected>Cinsiyet...</option>
+                                <option value="true">Male</option>
+                                <option value="false">Female</option>
+                            </select>
+                            @if (ViewBag.Role)
+                            {
+                                <select class="form-select" asp-for="BranchId">
+                                    <option value="0" disabled selected>Şube Seç...</option>
+                                    @foreach (var item in ViewBag.Branches as List<Branch>)
+                                    {
+                                        <option value="@item.BranchId">@item.BranchName</option>
+                                    }
+                                </select>
+                            }
+                            <select class="form-select mt-2" asp-for="Role">
+                                <option value="0" disabled selected>Rol Seç...</option>
+                                @if(ViewBag.Role)
+                                {
+                                    <option value="0">SuperAdmin</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Teacher</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Teacher</option>
+                                }
+                            </select>
+                            <div class="form-group">
+                                <label for="your_phone"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="file" asp-for="ImagePath"  />
+                                <span class="text-danger" asp-validation-for="ImagePath" class="text-danger"></span>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Create" />
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="~/Register/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Register/js/main.js"></script>
+    <partial name="~/Views/Shared/validation.cshtml"></partial>
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	@await RenderSectionAsync("Links",false)
+	@await Html.PartialAsync("~/Views/Partials/_LinkPartialView.cshtml")
+	<style>
+		.form-control {
+			background-color: var(--bs-gray-100);
+			color: black;
+		}
+		.preview-item{
+			background: white !important;
+		}
+		.dropdown-item:hover{
+			background: rgba(0,0,0,.2);
+		}
+		a {
+			color: black !important;
+		}
+
+		.form-label {
+			color: black;
+			font-size: 16px !important;
+		}
+
+		.form-select {
+			background-color: var(--bs-gray-100) !important;
+			color: black !important;
+		}
+
+		.form-check-label {
+			color: black !important;
+		}
+
+		.form-control:focus {
+			background-color: var(--bs-gray-100) !important;
+			color: black !important;
+		}
+
+		.dt-input {
+			background: white !important;
+			color: black !important;
+		}
+
+		.menu-items .nav-link:hover {
+			background-color: var(--bs-gray-200) !important;
+		}
+		</style>
+</head>
+
+<body style="background-color: #fff; color: black !important">
+	<div class="container-scroller" style="height:100vh;overflow: auto;">
+		@await Component.InvokeAsync("SideBarComponent")
+
+		<div class="container-fluid page-body-wrapper">
+			@await Component.InvokeAsync("NavbarComponent")
+			<div class="main-panel">
+				<div class="content-wrapper" style="background: #fff">
+					@RenderBody()
+				</div>
+			</div>
+		</div>
+
+		<!-- partial -->
+
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	@await Html.PartialAsync("~/Views/Partials/_ScriptPartialView.cshtml")
+	@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

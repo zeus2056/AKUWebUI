@@ -1,0 +1,159 @@
+﻿@using EntityLayer;
+@model AppUser
+<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: rgba(0, 0, 0, .2) !important;">
+    <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background: rgba(0, 0, 0, .02) !important;">
+    <a class="sidebar-brand brand-logo navbar-brand text-info" href="/Admin">
+   <img src="~/images/minikodlogo.png"  class="img-fluid" style="height: auto;"/>
+		</a>
+        <a class="sidebar-brand brand-logo-mini navbar-brand text-info" href="/Admin">
+            <img src="~/images/minikodlogo.png" class="img-fluid" style="height: auto;" />
+        </a>
+    </div>
+    <ul class="nav" style="background: rgba(0, 0, 0, .02) !important;">
+        <li class="nav-item profile">
+            <div class="profile-desc">
+                <div class="profile-pic">
+                    <div class="count-indicator">
+                        <img class="img-xs rounded-circle " src="~/Images/@(ViewBag.Gender ? "man.png" : "woman.png")" alt="image">
+                        <span class="count bg-success"></span>
+                    </div>
+                    <div class="profile-name">
+                        <h5 class="mb-0 font-weight-normal text-dark">@User.Identity.Name</h5>
+                        <span>@(Model.Role != Rol.SuperAdmin ? Model.Branch.BranchName : "" ) @(ViewBag.UserRole) Member</span>
+                    </div>
+                </div>
+                <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+                <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
+                    <a href="#" class="dropdown-item preview-item">
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-dark rounded-circle">
+                                <i class="mdi mdi-cog text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <p class="preview-subject ellipsis mb-1 text-small">Hesap Ayarları</p>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item preview-item" asp-action="ChangePassword" asp-controller="Login" asp-route-slug="@ViewBag.Slug">
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-dark rounded-circle">
+                                <i class="mdi mdi-onepassword  text-info"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <p class="preview-subject ellipsis mb-1 text-small">Şifre Değiştir</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item nav-category">
+            <span class="nav-link">Navigation</span>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Branch">
+                <span class="menu-icon">
+                    <i class="fa fa-life-ring"></i>
+                </span>
+                <span class="menu-title">Şubeler</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Students">
+                <span class="menu-icon">
+                    <i class="fa fa-user-circle"></i>
+                </span>
+                <span class="menu-title">Öğrenciler</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Staffs">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Personeller</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Permissions">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">İzinler</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="AgeGroups">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Yaş Grupları</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Rates">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Açılacak Kurlar</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="OpenRates">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Mevcut Kurlar</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Banks">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Bankalar</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Rapors">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Raporlar</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Payments">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Ödemeler</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Expenses">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Giderler</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items" style="background: rgba(0, 0, 0, .2) !important;">
+            <a class="nav-link" asp-action="Index" asp-controller="PaymentTypes">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">Ödeme Tipleri</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items" style="background: rgba(0, 0, 0, .2) !important;">
+            <a class="nav-link" asp-action="Index" asp-controller="DiscountRates">
+                <span class="menu-icon">
+                    <i class="fa fa-id-card"></i>
+                </span>
+                <span class="menu-title">İndirim Oranları</span>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,42 @@
+﻿@using EntityLayer.Entities;
+@model CreateRateStudentModel
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Öğrenci Ekle</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="AddRateStudent" asp-controller="OpenRates">
+			<input type="hidden" name="RateId" value="@ViewBag.Rate.RateId"/>
+			<div class="form-group">
+				<select class="form-select" asp-for="StudentId">
+					<option value="0" disabled selected>Öğrenci Seçiniz...</option>
+					@foreach(var item in ViewBag.Students as List<Student>)
+					{
+						<option value="@item.StudentId">@item.Name @item.Surname</option>
+					}
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="form-label" asp-for="StartRateDate">Kur Başlama Tarihi</label>
+				<input type="date" class="form-control" asp-for="StartRateDate"/>
+				<span class="text-danger" asp-validation-for="StartRateDate"></span>
+			</div>
+			@await Component.InvokeAsync("DiscountComponent")
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Öğrenci Ekle</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

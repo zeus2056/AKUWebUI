@@ -1,0 +1,95 @@
+﻿@using AKUWebUI.Models.Parent;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model CreateParentModel
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Ebeveyn Ekle</h5>
+	</div>
+	<div class="card-body">
+		<div asp-validation-summary="ModelOnly" class="text-info"></div>
+		<form class="forms-sample" method="post" asp-action="CreateParent" asp-controller="Parents">
+			<input type="hidden" asp-for="StudentId"/>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="Name">İsim</label>
+						<input type="text" placeholder="Adı" asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-info mt-2"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="Surname">Soyad</label>
+						<input type="text" placeholder="Soyadı" asp-for="Surname" class="form-control" />
+						<span asp-validation-for="Surname" class="text-info mt-2"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="TC">TC</label>
+						<input type="text" placeholder="TC" asp-for="TC" class="form-control" maxlength="11" />
+						<span asp-validation-for="TC" class="text-info mt-2"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="PhoneNumber">Telefon Numarası</label>
+						<input type="tel" placeholder="Tel No" asp-for="PhoneNumber" class="form-control" maxlength="11" />
+						<span asp-validation-for="PhoneNumber" class="text-info mt-2"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="Job">İş</label>
+						<input type="text" placeholder="İş" asp-for="Job" class="form-control" />
+						<span asp-validation-for="Job" class="text-info mt-2"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="Mail">Mail</label>
+						<input type="email" placeholder="Email" asp-for="Mail" class="form-control" />
+						<span asp-validation-for="Mail" class="text-info mt-2"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<select asp-for="ParentType" class="form-select">
+							<option value="0" disabled selected>Veli Seç...</option>
+							<option>Anne</option>
+							<option>Baba</option>
+							<option>Anneane</option>
+							<option>Dede</option>
+							<option>Hala</option>
+							<option>Teyze</option>
+							<option>Amca</option>
+							<option>Dayi</option>
+							<option>Abla</option>
+							<option>Abi</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Ebeveyn Ekle</span>
+				</button>
+			</div>
+		</form>
+	</div>
+
+	@section Scripts{
+		<partial name="~/Views/Shared/validation.cshtml"></partial>
+	}
+</div>

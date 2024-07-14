@@ -1,0 +1,45 @@
+﻿@using EntityLayer.Entities;
+@using EntityLayer;
+@model List<Branch>
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+	<form method="post" asp-action="ShowBalanceFiltered" asp-controller="Rapors">
+		<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+		@if(ViewBag.Role == Rol.SuperAdmin)
+		{
+			<div class="form-group">
+				<label class="form-label" for="BranchId">Kur</label>
+				<select class="form-select" name="BranchId">
+					<option value="-1" disabled selected>Şube Seçiniz...</option>
+					<option value="0">Hepsi</option>
+					@foreach (var item in Model)
+					{
+						<option value="@item.BranchId">@item.BranchName</option>
+					}
+				</select>
+			</div>
+		}
+		else
+		{
+			<input type="hidden" name="BranchId" value="@ViewBag.BranchId"/>
+		}
+		<div class="form-group">
+			<label class="form-label">Başlangıç Tarihi</label>
+			<input type="date" class="form-control" name="StartDate"/>
+		</div>
+		<div class="form-group">
+			<label class="form-label">Bitiş Tarihi</label>
+			<input type="date" class="form-control" name="EndDate" />
+		</div>
+		<div class="form-group">
+			<input type="submit" value="Pdf Çevir" formtarget="_blank" class="btn btn-primary" />
+		</div>
+	</form>
+</div>
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

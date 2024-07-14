@@ -1,0 +1,27 @@
+﻿@using EntityLayer.Entities;
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model int
+
+<div class="container">
+	<form method="post" asp-action="ShowAllBanksRapor" asp-controller="Banks">
+		<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+		<input type="hidden" name="BankId" value="@Model"/>
+		<div class="form-group">
+			<label class="form-label" for="BranchId">Şube</label>
+			<select class="form-select br" name="BranchId" id="BranchId">
+				<option value="-1" disabled selected>Şube Seçiniz...</option>
+				<option value="0">Hepsi</option>
+				@foreach (var item in ViewBag.Branches as List<Branch>)
+				{
+					<option value="@item.BranchId">@item.BranchName</option>
+				}
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="submit" value="Pdf Çevir" formtarget="_blank" class="btn btn-primary" />
+		</div>
+	</form>
+</div>

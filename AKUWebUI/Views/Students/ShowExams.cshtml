@@ -1,0 +1,133 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+@model List<Exam>
+@if (Model.Count > 0)
+{
+	<a class="btn btn-primary" asp-action="ShowExamsRapor" asp-controller="Students" asp-route-slug="@Model[0].Student.Slug" target="_blank">Rapor Al</a>
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>Kur Adı</th>
+					<th>Yaş Grubu</th>
+					<th>Sınav Tarihi</th>
+					<th>Not</th>
+					<th>Sınav Geçme Notu</th>
+					<th>İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Rate.RateName</td>
+						<td>@item.Rate.AgeGroup.Name</td>
+						<td>@item.ExamDate</td>
+						<td>@(item.ExamResult == null ? "Sınav Notu Girilmedi" : item.ExamResult.Note)</td>
+						<td>@item.SuccessNote</td>
+						<td>
+							@if(item.ExamDate <= DateTime.Now)
+							
+								@if (item.ExamResult == null)
+								{
+									<a class="btn btn-primary" asp-action="EntryNote" asp-controller="Students" asp-route-id="@item.ExamId">Not Gir</a>
+								}
+								else
+								{
+									@if(ViewBag.LastExamId != null)
+									{
+										if (ViewBag.LastExamId == item.ExamId)
+										{
+											<a class="btn btn-success" asp-action="UpdateNote" asp-controller="Students" asp-route-id="@item.ExamId">Not Güncelle</a>
+										}
+									}
+								}
+							
+							@if(item.ExamResult != null && !item.RateStudent.State)
+							{
+								@if(ViewBag.LastExamId != null)
+								{
+									if(ViewBag.LastExamId == item.ExamId)
+									{
+										@if (item.ExamResult.Note >= item.SuccessNote)
+										{
+											<a class="btn btn-dark" asp-action="ChangeRate" asp-controller="Students" asp-route-id="@item.ExamId">Kur Değiştir</a>
+										}
+										else
+										{
+											<a class="btn btn-danger" asp-action="RepeatRate" asp-controller="Students" asp-route-id="@item.ExamId">Kur Tekrarla</a>
+										}
+									}
+								}
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek Sınav Yok...
+	</div>
+}
+
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let table = new DataTable("#myTable")
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

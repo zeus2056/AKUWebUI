@@ -1,0 +1,11 @@
+﻿@using EntityLayer.Entities;
+@model List<Rate>
+
+	<label class="form-label" for="RateName">Kur</label>
+<select class="form-select" name="RateName">
+	<option disabled selected value="0">Kur Seçiniz...</option>
+	@foreach(var item in Model)
+	{
+		<option value="@item.RateName">@item.RateName</option>
+	}
+</select>

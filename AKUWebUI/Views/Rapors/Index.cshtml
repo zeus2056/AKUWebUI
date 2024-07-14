@@ -1,0 +1,60 @@
+﻿@using EntityLayer;
+@using Newtonsoft.Json;
+@model AppUser
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-3">
+	<a class="btn btn-secondary" asp-action="SendMail" asp-controller="Rapors">Mail Gönder</a><br /><br />
+	<a class="btn btn-primary" asp-action="ActiveStudents" asp-controller="Rapors">Aktif Öğrenci Raporu</a>
+	<div class="dropdown d-inline-block">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Bakiyesi Olan Öğrenci Raporu
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<a class="btn btn-secondary" asp-action="ShowBalance" asp-controller="Rapors" >Tarih Filtresiz</a>
+			<a class="btn btn-secondary" asp-action="ShowBalanceFiltered" asp-controller="Rapors" >Tarih Filtreli</a>
+		</div>
+	</div>
+	
+	<a class="btn btn-warning" asp-action="AgeGroupsStudents" asp-controller="Rapors">Yaş Gruplarına Göre Öğrenci Raporu</a>
+	@if(Model.Role == Rol.SuperAdmin)
+	{
+		<a class="btn btn-success" asp-action="ActiveRateStudents" asp-controller="Rapors">Aktif Kur Öğrenci Raporu</a>
+	}
+	else
+	{
+		<a class="btn btn-success" asp-action="ActiveRateStudents" asp-controller="Rapors" target="_blank">Aktif Kur Öğrenci Raporu</a>
+	}
+</div>
+
+@section Scripts{
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+
+
+		</script>
+
+	}
+
+
+}

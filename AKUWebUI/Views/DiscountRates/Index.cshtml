@@ -1,0 +1,112 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<DiscountRate>
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+@if (Model.Count > 0)
+{
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>#</th>
+					<th>İndirim Oran İsmi</th>
+					<th>İndirim Oranı</th>
+					@if (ViewBag.Role)
+					{
+						<th>Update</th>
+						<th>Delete</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.DiscountRateId</td>
+						<td>@item.DiscontRateName</td>
+						<td>@item.DiscountRates</td>
+						@if (ViewBag.Role)
+						{
+							<td>
+								<a class="btn btn-warning" asp-action="UpdateDiscountRate" asp-controller="DiscountRates" asp-route-id="@item.DiscountRateId">Update</a>
+							</td>
+							<td>
+								<a class="btn btn-danger" asp-action="DeleteDiscountRate" asp-controller="DiscountRates" asp-route-id="@item.DiscountRateId">Delete</a>
+							</td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek indirim oranı yok.
+	</div>
+}
+@if (ViewBag.Role)
+{
+	<a class="btn btn-primary mt-3" asp-action="CreateDiscountRate" asp-controller="DiscountRates">
+		<i class="fa fa-plus"></i>
+		<span>İndirim Oranı Ekle</span>
+	</a>
+}
+
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let table = new DataTable("#myTable");
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

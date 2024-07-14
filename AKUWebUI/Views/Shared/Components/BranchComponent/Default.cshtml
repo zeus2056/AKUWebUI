@@ -1,0 +1,20 @@
+﻿@using EntityLayer.Entities;
+@model List<Branch>
+
+
+	<label class="form-label" for="BranchId">Şube</label>
+	<select class="form-select" name="BranchId" id="BranchId">
+		<option value="0" disabled selected>Şube Seçiniz...</option>
+		@foreach(var item in Model)
+		{
+		if(item.BranchId == ViewBag.SelectedId)
+		{
+			<option value="@item.BranchId" selected>@item.BranchName</option>
+		}
+		else
+		{
+			<option value="@item.BranchId">@item.BranchName</option>
+		}
+
+		}
+	</select>

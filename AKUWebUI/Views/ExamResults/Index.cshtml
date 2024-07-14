@@ -1,0 +1,69 @@
+﻿@using EntityLayer.Entities;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model CreateExamResultModel
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+<form asp-action="Index" asp-controller="ExamResults" class="mt-2">
+	<input type="hidden" asp-for="Slug"/>
+	<input type="hidden" asp-for="ExamId"/>
+
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead>
+				<tr>
+					<th>Öğrenci Numarası</th>
+					<th>Öğrenci Adı Soyadı</th>
+					<th>Öğrenci Notu</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var item in ViewBag.RateStudents as List<RateStudent>)
+				{
+					<tr>
+						<td>@item.StudentId</td>
+						<td>@item.Student.Name @item.Student.Surname</td>
+						<td>
+							<label class="form-label" asp-for="Note">Not</label>
+							<input type="number" asp-for="Note" class="form-control" min="1" max="100" step="1"/>
+							<span class="text-info" asp-validation-for="Note"></span>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<div class="form-group">
+			<button class="btn btn-info w-100 text-center">Notları Gir</button>
+		</div>
+	</div>
+</form>
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let table = new DataTable("#myTable");
+	</script>
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

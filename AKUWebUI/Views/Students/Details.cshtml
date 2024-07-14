@@ -1,0 +1,140 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model Student
+@if (ViewBag.Role)
+{
+	if (Model.State)
+	{
+		<a class="btn btn-info mb-3" asp-action="EditStudent" asp-controller="Students" asp-route-slug="@Model.Slug">
+			<i class="fa fa-edit"></i>
+			Öğrenci Güncelle
+		</a>
+		<a class="btn btn-warning mb-3" asp-action="CreateParent" asp-controller="Parents" asp-route-slug="@Model.Slug">
+			<i class="fa fa-plus"></i>
+			Veli Ekle
+		</a>
+		<a class="btn btn-primary mb-3" asp-action="AddExam" asp-controller="Students" asp-route-id="@Model.StudentId">Sınav Ekle</a>
+	}
+	<a class="btn btn-success mb-3" asp-action="ShowRates" asp-controller="Students" asp-route-slug="@Model.Slug">
+		Kur Bilgileri Görüntüle
+	</a>
+	<a class="btn btn-info mb-3" asp-action="ShowExams" asp-controller="Students" asp-route-slug="@Model.Slug">
+		Sınavları Gör
+	</a>
+	<a class="btn btn-primary mb-3" asp-action="PayRate" asp-controller="Students" asp-route-slug="@Model.Slug">Borçları Göster</a>
+	<a class="btn btn-secondary mb-3" asp-action="ShowHistoryPayment" asp-controller="Students" asp-route-slug="@Model.Slug">
+		Ödeme Geçmişi
+	</a>
+	<a class="btn btn-dark mb-3" asp-action="SendMailVeli" asp-controller="Students" asp-route-id="@Model.StudentId">Mail Gönder</a>
+	
+}
+<div class="card text-dark" style="background: #fff">
+	<div class="d-flex justify-content-center">
+		<img class="img-fluid" src="~/Images/@(!string.IsNullOrEmpty(Model.ImagePath) ? Model.ImagePath : (Model.Gender ? "man.png" : "woman.png"))" />
+	</div>
+	<div class="card-header">
+		<h5 class="card-title text-dark text-center">Öğrenci Bilgi</h5>
+	</div>
+	<div class="card-body">
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">İsim : </div>
+					<div class="col-md-9">@Model.Name</div>
+				</div>
+			</div>
+			<div class="col-md-6  ">
+				<div class="row">
+					<div class="col-md-3">Soyisim : </div>
+					<div class="col-md-9">@Model.Surname</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">TC : </div>
+					<div class="col-md-9">@Model.TC</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Tel : </div>
+					<div class="col-md-9">@Model.Phone</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Yaş : </div>
+					<div class="col-md-9">@Model.Age</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Cinsiyet : </div>
+					<div class="col-md-9">@(Model.Gender ? "Erkek" : "Kadın")</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Doğum Tarihi : </div>
+					<div class="col-md-9">@Model.Date</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Şube : </div>
+					<div class="col-md-9">@Model.Branch.BranchName</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Sınıf : </div>
+					<div class="col-md-9">@Model.Class</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Okul : </div>
+					<div class="col-md-9">@Model.SchoolName</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@await Component.InvokeAsync("ParentInfoComponent",new{
+	id = Model.StudentId
+})
+@section Scripts{
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

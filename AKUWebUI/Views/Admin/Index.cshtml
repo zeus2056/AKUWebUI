@@ -1,0 +1,38 @@
+﻿@using Newtonsoft.Json;
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+ <div class="bg-body-secondary p-5">
+     <h1 class="text-center text-info">Admin Panel Sayfasına Hoşgeldiniz...</h1>
+ </div>
+
+@section Scripts{
+    @if (TempData["Errors"] != null)
+    {
+        var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            let errors = [];
+            for (let i = 0;i < @errors.Count;i++){
+                errors.push({
+                    "description" : "@errors[0].Description"
+                })
+            }
+            for(let error of errors){
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${error.description}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        </script>
+    
+}
+}
+
+
+

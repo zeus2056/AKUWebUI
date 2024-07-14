@@ -1,0 +1,103 @@
+﻿@using EntityLayer.Entities;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+@model CreatePaymentModel
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Öde</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="PayRates" asp-controller="Students">
+			<div class="text-info" asp-validation-summary="ModelOnly"></div>
+			<input type="hidden" asp-for="StudentId"/>
+			<input type="hidden" asp-for="PaymentId"/>
+			<input type="hidden" asp-for="RateStudentId"/>
+			<input type="hidden" asp-for="RateId"/>
+			<input type="hidden" asp-for="RatePrice"/>
+			<div class="form-group">
+				<input type="number" class="form-control" min="1" max="@Model.RatePrice" step="1" asp-for="Price"/>
+				<span class="text-info" asp-validation-for="Price"></span>
+				<span class="text-warning">Total Borç : @Model.RatePrice</span>
+			</div>
+			<div class="form-group pt">
+				<select class="form-select" asp-for="PaymentTypeId">
+					<option value="0" disabled selected>Ödeme Tipi Seç</option>
+					@foreach(var item in ViewBag.PaymentTypes as List<PaymentType>)
+					{
+						<option value="@item.PaymentTypeId">@item.PaymentTypeName</option>
+					}
+				</select>
+				<span class="text-info" asp-validation-for="PaymentTypeId"></span>
+			</div>
+			<div class="form-group">
+				<select class="form-select bank" asp-for="BankId" style="display: none">
+					<option value="0" disabled selected>Banka Seç...</option>
+					@foreach (var item in ViewBag.Banks as List<Bank>)
+					{
+						<option value="@item.BankId">@item.BankName</option>
+					}
+				</select>
+				<span class="text-info" asp-validation-for="BankId"></span>
+			</div>
+			@if(ViewBag.Parents != null)
+			{
+				<div class="form-group">
+					<select class="form-select" asp-for="ParentId">
+						<option value="0" disabled selected>Ebeveyn Seç...</option>
+						@foreach (var item in ViewBag.Parents as List<Parent>)
+						{
+							<option value="@item.ParentId">@item.Name @item.Surname</option>
+						}
+					</select>
+					<span class="text-info" asp-validation-for="ParentId"></span>
+				</div>
+			}
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Öde</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		let paymetnType = document.querySelector(".pt");
+		let banks = document.querySelector(".bank")
+		paymetnType.addEventListener("change",(e) => {
+			if(e.target.value == 3 || e.target.value == 2)
+				banks.style.display = "block";
+			else
+				banks.style.display = "none";
+		})
+	</script>
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

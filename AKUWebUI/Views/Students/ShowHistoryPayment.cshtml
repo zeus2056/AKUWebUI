@@ -1,0 +1,97 @@
+﻿@using EntityLayer.Entities;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<HistoryPayment>
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+@if (Model.Count > 0)
+{
+	<a class="btn btn-info" asp-action="HistoryPaymentRapor" asp-controller="Students" asp-route-id="@Model[0].StudentId" target="_blank">Rapor Al</a>
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>Öğrenci Adı Soyadı</th>
+					<th>Banka Adı</th>
+					<th>Kur Adı</th>
+					<th>Ödeme Miktarı</th>
+					<th>Ödeme Tarihi</th>
+					<th>Ödeme Tipi</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Student.Name @item.Student.Surname</td>
+						<td >@item.Bank?.BankName</td>
+						<td>@item.Rate.RateName</td>
+						<td>@item.Price</td>
+						<td>@item.DatePrice</td>
+						<td>@item.PaymentType.PaymentTypeName</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek Ödeme Geçmişi Yok...
+	</div>
+}
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let table = new DataTable("#myTable");
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

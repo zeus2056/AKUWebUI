@@ -1,0 +1,36 @@
+﻿@using EntityLayer.Entities;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model RemoveStudentModel
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Öğrenci Sil</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="RemoveStudent" asp-controller="OpenRates">
+			<input type="hidden" asp-for="RateId"/>
+			<div class="form-group">
+				<select class="form-control" asp-for="RateStudentId">
+					<option value="0" disabled selected>Öğrenci Seç...</option>
+					@foreach(var item in ViewBag.RateStudents as List<RateStudent>)
+					{
+						<option value="@item.RateStudentId">@item.Student.Name @item.Student.Surname</option>	
+					}
+				</select>
+				<span asp-validation-for="RateStudentId" class="text-info mt-2"></span>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Öğrenci Sil</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

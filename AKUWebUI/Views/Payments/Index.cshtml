@@ -1,0 +1,181 @@
+﻿@using EntityLayer.Entities;
+@using EntityLayer;
+@using Newtonsoft.Json;
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<Payment>
+@section Links{
+	<link rel="stylesheet" href="~/css/Table.css" />
+	<style>
+
+		body {
+			font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+			background-color: #fff;
+		}
+
+		table.dataTable tbody tr.stripe1 {
+			background-color: #E8E8E8;
+		}
+
+		table.dataTable tbody tr.stripe2 {
+			background-color: #c0c0c0;
+			border-bottom: solid #c0c0c0;
+		}
+
+	</style>
+
+}
+
+@if (Model.Count > 0 || ViewBag.FrontPayments.Count > 0)
+{
+	<div class="table-responsive">
+		<table class="display nowrap text-dark" id="myTable">
+			<thead class="table-primary">
+				<tr>
+					<th>Öğrenci Adı Soyadı</th>
+					<th>Kur Adı</th>
+					<th>Toplam Kur Bedeli</th>
+					<th>Ödeme Tutarı</th>
+					<th>Bakiye</th>
+					<th>Son Ödeme Tarihi</th>
+
+					<th>Ödeme Yap</th>
+
+
+				
+						<th>Sil</th>
+					
+
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+
+					@if (item.Bakiye != 0)
+					{
+						<tr class="@(item.State ? "bg-danger" : "")">
+							<td>
+								@if (item.Parent == null)
+								{
+									@item.Student.Name @item.Student.Surname
+								}
+								else
+								{
+									@item.Parent.Student.Name @item.Parent.Student.Surname
+								}
+							</td>
+							<td>@item.Rate.RateName</td>
+							<td>@item.PaymentPrice</td>
+							<td>@item.RemaningPaymentPrice</td>
+							<td>@item.Bakiye</td>
+							<td>@item.PaymentDate</td>
+							<td>
+							@if (ViewBag.Role == Rol.SuperAdmin || ViewBag.Role == Rol.Admin)
+							{
+
+									@if (!item.State)
+									{
+										<a class="btn btn-warning" asp-action="PayRates" asp-controller="Students" asp-route-id="@item.PaymentId" asp-route-studentId="@item.StudentId" asp-route-rateStudentId="@item.RateStudentId">Ödeme Yap</a>
+									}
+									
+								
+
+							}
+							</td>
+							<td>
+							@if (ViewBag.Role == Rol.SuperAdmin && item
+									.State)
+							{
+								
+									<a class="btn btn-dark" asp-action="DeletePayment" asp-controller="Students" asp-route-studentId="@item.RateStudent.StudentId" asp-route-id="@item.PaymentId" asp-route-rateStudentId="@item.RateStudentId">Sil</a>
+								
+
+
+							}
+							</td>
+						</tr>
+					}
+				}
+				@foreach (var _item in ViewBag.FrontPayments as List<FrontPayment>)
+				{
+					<tr class="@(_item.State ? "bg-danger" : "")">
+						<td>@_item.RateStudent.Student.Name @_item.RateStudent.Student.Surname</td>
+						<td>@_item.Rate.RateName</td>
+						<td>@_item.RatePrice</td>
+						<td>@_item.RemaningPrice</td>
+						<td>@_item.Bakiye</td>
+						<td>@(_item.LastDate == null ? "Ödeme Yapılmamış..." : _item.LastDate)</td>
+						<td>
+							@if (ViewBag.Role == Rol.SuperAdmin || ViewBag.Role == Rol.Admin)
+							{
+								if (!_item.State)
+								{
+
+									<a class="btn btn-warning" asp-action="PayRates" asp-controller="Students" asp-route-id="0" asp-route-studentId="@_item.RateStudent.Student.StudentId" asp-route-rateStudentId="@_item.RateStudentId">Ödeme Yap</a>
+
+								}
+
+
+							}
+						</td>
+						<td>
+							@if (ViewBag.Role == Rol.SuperAdmin && _item.State)
+							{
+
+
+								<a class="btn btn-dark" asp-action="RemovePayment" asp-controller="Payments" asp-route-studentId="@_item.RateStudent.StudentId" asp-route-id="@_item.FrontPaymentId" asp-route-rateStudentId="@_item.RateStudentId">Sil</a>
+
+
+
+
+							}
+						</td>
+
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="alert alert-warning alert-dismissible">
+		<button class="btn-close" data-bs-dismiss="alert"></button>
+		Listelenecek Ödeme Yok.
+	</div>
+}
+
+@section Scripts{
+	<script src="~/js/dataTables.min.js"></script>
+	<script>
+		let table = new DataTable("#myTable");
+	</script>
+	@if (TempData["Errors"] != null)
+	{
+		var errors = JsonConvert.DeserializeObject<List<Error>>(TempData["Errors"] as string);
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			let errors = [];
+			for (let i = 0; i < @errors.Count; i++) {
+				errors.push({
+					"description": "@errors[0].Description"
+				})
+			}
+			for (let error of errors) {
+				Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: `${error.description}`,
+					showConfirmButton: false,
+					timer: 1500
+				});
+			}
+		</script>
+
+	}
+}

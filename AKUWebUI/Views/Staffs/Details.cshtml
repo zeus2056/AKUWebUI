@@ -1,0 +1,106 @@
+﻿@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model ResultStaffModel
+
+@if (ViewBag.Role)
+{
+	<a class="btn btn-warning mb-2" asp-action="EditStaff" asp-controller="Staffs" asp-route-slug="@ViewBag.Slug">
+		<i class="fa fa-edit"></i>
+		<span>Personel Güncelle</span>
+	</a>
+}
+<a class="btn btn-info mb-2" asp-action="EditEmail" asp-controller="Staffs" asp-route-slug="@ViewBag.Slug">
+	<i class="fa fa-edit"></i>
+	<span>Mail Güncelle</span>
+</a>
+<a class="btn btn-success mb-2" asp-action="ShowHistoryPayments" asp-controller="Staffs" asp-route-slug="@ViewBag.Slug">
+	<i class="fa fa-edit"></i>
+	<span>İzin Geçmişi Göster</span>
+</a>
+<a class="btn btn-danger mb-2" asp-action="ChangeImagePath" asp-controller="Staffs" asp-route-slug="@ViewBag.Slug">
+	Profil Resmini Değiştir
+</a>
+
+
+<div class="card text-dark" style="background: #fff">
+	<div class="d-flex justify-content-center">
+		<img class="img-fluid" src="~/Images/@(Model.ImagePath != null ? Model.ImagePath : (Model.Gender ? "man.png" : "woman.png"))" />
+	</div>
+	<div class="card-header">
+		<h5 class="card-title text-dark text-center">Personel Bilgi</h5>
+	</div>
+	<div class="card-body">
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Ad : </div>
+					<div class="col-md-9">@Model.Name</div>
+				</div>
+			</div>
+			<div class="col-md-6  ">
+				<div class="row">
+					<div class="col-md-3">Soyad : </div>
+					<div class="col-md-9">@Model.Surname</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">TC : </div>
+					<div class="col-md-9">@Model.TC</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Tel : </div>
+					<div class="col-md-9">@Model.Phone</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Yaş : </div>
+					<div class="col-md-9">@Model.Age</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Cinsiyet : </div>
+					<div class="col-md-9">@(Model.Gender ? "Erkek" : "Kadın")</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Email : </div>
+					<div class="col-md-9">@Model.Email</div>
+				</div>
+			</div>
+			<div class="col-md-6  ">
+				<div class="row">
+					<div class="col-md-3">Tarih : </div>
+					<div class="col-md-9">@Model.Date</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-2 mb-md-0">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-3">Şube : </div>
+				<div class="col-md-9">@Model.BranchName</div>
+			</div>
+		</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-3">Rol : </div>
+					<div class="col-md-9">@Model.Role.ToString()</div>
+				</div>
+			</div>
+	</div>
+	</div>
+
+</div>

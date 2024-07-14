@@ -1,0 +1,38 @@
+﻿@using EntityLayer.Entities;
+
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+	<form method="post" asp-action="AgeGroupsStudents" asp-controller="Rapors">
+		<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+		<div class="form-group">
+			<label class="form-label" for="RateId">Kur</label>
+			<select class="form-select br" name="RateId" id="RateId">
+				<option value="-1" disabled selected>Kur Seçiniz...</option>
+				<option value="0">Hepsi</option>
+				@foreach (var _item in ViewBag.AgeGroups as List<AgeGroup>)
+				{
+					foreach(var item in _item.Rates)
+					{
+						@if(ViewBag.BranchId == 0)
+						{
+							<option value="@item.RateId">@_item.Name - @item.RateName - @item.Branch.BranchName</option>
+						}
+						else
+						{
+							@if(item.BranchId == ViewBag.BranchId)
+							{
+								<option value="@item.RateId">@_item.Name - @item.RateName - @item.Branch.BranchName</option>
+							}
+						}
+					}
+				}
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="submit" value="Pdf Çevir" formtarget="_blank" class="btn btn-primary" />
+		</div>
+	</form>
+</div>

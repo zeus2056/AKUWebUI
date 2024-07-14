@@ -1,0 +1,35 @@
+﻿@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model UpdateDiscountRateModel
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">İndirim Oranı Güncelle</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="UpdateDiscountRate" asp-controller="DiscountRates">
+			<input type="hidden" asp-for="DiscountRateId"/>
+			<div class="form-group">
+				<label class="form-label" asp-for="DiscountRateName">İndirim Oran Adı : </label>
+				<input type="text" placeholder="İndirim Oran Adı..." asp-for="DiscountRateName" class="form-control" />
+				<span asp-validation-for="DiscountRateName" class="text-info mt-2"></span>
+			</div>
+			<div class="form-group">
+				<label class="form-label" asp-for="DiscountRate">İndirim Oranı : </label>
+				<input type="number" asp-for="DiscountRate" class="form-control" min="1" max="99" step="1" />
+				<span asp-validation-for="DiscountRate" class="text-info mt-2"></span>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>İndirim Oranı Güncelle</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}

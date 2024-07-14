@@ -1,0 +1,47 @@
+﻿@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model CreateAgeGroupModel
+
+<div class="card" style="background: #fff">
+	<div class="card-header">
+		<h5 class="card-title text-dark">Yaş Grubu Ekle</h5>
+	</div>
+	<div class="card-body">
+		<form class="forms-sample" method="post" asp-action="CreateAgeGroup" asp-controller="AgeGroups">
+			<div class="text-info" asp-validation-summary="ModelOnly"></div>
+			<div class="form-group">
+				<label class="form-label" asp-for="Name">İsim</label>
+				<input type="text" placeholder="Yaş Grubu Adı..." asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-info mt-2"></span>
+			</div>
+			<div class="row mb-2">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="StartAge">Başlangıç Yaş</label>
+						<input type="number" class="form-control" min="5" step="1" asp-for="StartAge"/>
+						<span class="text-info" asp-validation-for="StartAge"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="form-label" asp-for="EndAge">Bitiş Yaş</label>
+						<input type="number" class="form-control" min="5" step="1" asp-for="EndAge" />
+						<span class="text-info" asp-validation-for="EndAge"></span>
+					</div>
+				</div>
+				</div>
+			<div class="form-group">
+				<button class="btn btn-warning w-100 text-center">
+					<i class="fa fa-plus"></i>
+					<span>Yaş Grubu Ekle</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<partial name="~/Views/Shared/validation.cshtml"></partial>
+}
